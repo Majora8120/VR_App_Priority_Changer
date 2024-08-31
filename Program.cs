@@ -85,7 +85,8 @@ static void Set_Priority(string process_name, string app_name)
                 if (proc.PriorityClass == ProcessPriorityClass.RealTime)
                 {
                     Console.WriteLine();
-                    Console.WriteLine($"{app_name} Priority Changed!"); Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"{app_name} Priority Changed!");
+                    Console.ForegroundColor = ConsoleColor.White;
                 }
             }
         }
