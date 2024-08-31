@@ -37,7 +37,7 @@ do
                     proc.PriorityClass = ProcessPriorityClass.RealTime;
                     if (proc.PriorityClass == ProcessPriorityClass.RealTime)
                     {
-                        Console.WriteLine("Worked");
+                        Console.WriteLine("Priority Changed!");
                     }
                 }
             }
@@ -56,7 +56,7 @@ do
                     proc.PriorityClass = ProcessPriorityClass.RealTime;
                     if (proc.PriorityClass == ProcessPriorityClass.RealTime)
                     {
-                        Console.WriteLine("Worked");
+                        Console.WriteLine("Priority Changed!");
                     }
                 }
             }
@@ -75,7 +75,7 @@ do
                     proc.PriorityClass = ProcessPriorityClass.RealTime;
                     if (proc.PriorityClass == ProcessPriorityClass.RealTime)
                     {
-                        Console.WriteLine("Worked");
+                        Console.WriteLine("Priority Changed!");
                     }
                 }
             }
@@ -94,7 +94,7 @@ do
                     proc.PriorityClass = ProcessPriorityClass.RealTime;
                     if (proc.PriorityClass == ProcessPriorityClass.RealTime)
                     {
-                        Console.WriteLine("Worked");
+                        Console.WriteLine("Priority Changed!");
                     }
                 }
             }
@@ -111,7 +111,7 @@ do
                     proc.PriorityClass = ProcessPriorityClass.RealTime;
                     if (proc.PriorityClass == ProcessPriorityClass.RealTime)
                     {
-                        Console.WriteLine("Worked");
+                        Console.WriteLine("Priority Changed!");
                     }
                 }
             }
@@ -128,7 +128,7 @@ do
                     proc.PriorityClass = ProcessPriorityClass.RealTime;
                     if (proc.PriorityClass == ProcessPriorityClass.RealTime)
                     {
-                        Console.WriteLine("Worked");
+                        Console.WriteLine("Priority Changed!");
                     }
                 }
             }
