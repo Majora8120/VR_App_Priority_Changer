@@ -1,17 +1,32 @@
 ﻿using System.Diagnostics;
+using System.Security.Principal;
 
+bool isAdmin;
 var repeat = true;
 
-Console.ForegroundColor = ConsoleColor.Red;
-Console.WriteLine("RUN AS ADMINISTRATOR OR IT WON'T WORK CORRECTLY!");
-Console.WriteLine();
-Console.ForegroundColor = ConsoleColor.White;
+#pragma warning disable CA1416 // Validate platform compatibility | Should be save to ingnore as this should only ever be ran on windows
+using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
+{
+    WindowsPrincipal principal = new WindowsPrincipal(identity);
+    isAdmin = principal.IsInRole(WindowsBuiltInRole.Administrator);
+}
+#pragma warning restore CA1416 // Validate platform compatibility
+
+if (isAdmin == false)
+{
+    Console.ForegroundColor = ConsoleColor.Red;
+    Console.WriteLine("RUN AS ADMINISTRATOR OR IT WON'T WORK CORRECTLY!");
+    Console.WriteLine();
+    Console.ForegroundColor = ConsoleColor.White;
+}
 
 do
 {
+    Console.ForegroundColor = ConsoleColor.DarkCyan;
     Console.WriteLine("-----------------------");
     Console.WriteLine("VR App Priority Changer");
     Console.WriteLine("-----------------------");
+    Console.ForegroundColor = ConsoleColor.White;
     Console.WriteLine();
     Console.WriteLine("1 = OVRServer_x64.exe");
     Console.WriteLine("2 = vrserver.exe");
@@ -20,33 +35,34 @@ do
     Console.WriteLine("5 = All of the above");
     Console.WriteLine("6 = Exit");
 
-    string option = Console.ReadLine();
+    var option = Console.ReadKey();
 
-    switch (option)
+    switch (option.Key)
     {
-        case "1":
+        case ConsoleKey.D1:
             Set_Priority("OVRServer_x64", "OVRServer_x64.exe");
             break;
-        case "2":
+        case ConsoleKey.D2:
             Set_Priority("vrserver", "vrserver.exe");
             break;
-        case "3":
+        case ConsoleKey.D3:
             Set_Priority("OVRServer_x64", "OVRServer_x64.exe");
             Set_Priority("vrserver", "vrserver.exe");
             break;
-        case "4":
+        case ConsoleKey.D4:
             Set_Priority("Beat Saber", "Beat Saber.exe");
             break;
-        case "5":
+        case ConsoleKey.D5:
             Set_Priority("OVRServer_x64", "OVRServer_x64.exe");
             Set_Priority("vrserver", "vrserver.exe");
             Set_Priority("Beat Saber", "Beat Saber.exe");
             break;
-        case "6":
+        case ConsoleKey.D6:
             repeat = false;
             break;
         default:
-            Console.WriteLine("Invalid Key!");
+            Console.WriteLine(); Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Invalid Key!"); Console.ForegroundColor = ConsoleColor.White;
             break;
     }
 } while (repeat == true);
@@ -56,17 +72,20 @@ static void Set_Priority(string process_name, string app_name)
     Process[] process = Process.GetProcessesByName(process_name);
         if (process.Length == 0)
         {
-            Console.WriteLine($"{app_name} is not running");
+            Console.WriteLine(); Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"{app_name} is not running"); Console.ForegroundColor = ConsoleColor.White;
         }
         else
         {
             foreach (Process proc in process)
             {
+                Console.WriteLine(); Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Changing Priority for: " + proc.Id + " To RealTime");
                 proc.PriorityClass = ProcessPriorityClass.RealTime;
                 if (proc.PriorityClass == ProcessPriorityClass.RealTime)
                 {
-                    Console.WriteLine($"{app_name} Priority Changed!");
+                    Console.WriteLine();
+                    Console.WriteLine($"{app_name} Priority Changed!"); Console.ForegroundColor = ConsoleColor.Green;
                 }
             }
         }
