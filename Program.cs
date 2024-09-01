@@ -39,25 +39,25 @@ do
 
     switch (option.Key)
     {
-        case ConsoleKey.D1:
+        case ConsoleKey.D1: case ConsoleKey.NumPad1:
             Set_Priority("OVRServer_x64", "OVRServer_x64.exe");
             break;
-        case ConsoleKey.D2:
+        case ConsoleKey.D2: case ConsoleKey.NumPad2:
             Set_Priority("vrserver", "vrserver.exe");
             break;
-        case ConsoleKey.D3:
+        case ConsoleKey.D3: case ConsoleKey.NumPad3:
             Set_Priority("OVRServer_x64", "OVRServer_x64.exe");
             Set_Priority("vrserver", "vrserver.exe");
             break;
-        case ConsoleKey.D4:
+        case ConsoleKey.D4: case ConsoleKey.NumPad4:
             Set_Priority("Beat Saber", "Beat Saber.exe");
             break;
-        case ConsoleKey.D5:
+        case ConsoleKey.D5: case ConsoleKey.NumPad5:
             Set_Priority("OVRServer_x64", "OVRServer_x64.exe");
             Set_Priority("vrserver", "vrserver.exe");
             Set_Priority("Beat Saber", "Beat Saber.exe");
             break;
-        case ConsoleKey.D6:
+        case ConsoleKey.D6: case ConsoleKey.NumPad6:
             repeat = false;
             break;
         default:
