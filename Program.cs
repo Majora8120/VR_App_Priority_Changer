@@ -2,9 +2,8 @@
 using System.Security.Principal;
 
 bool isAdmin;
-var repeat = true;
 
-#pragma warning disable CA1416 // Validate platform compatibility | Should be save to ingnore as this should only ever be ran on windows
+#pragma warning disable CA1416 // Validate platform compatibility | Should be safe to ingnore as this should only ever be ran on windows
 using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
 {
     WindowsPrincipal principal = new WindowsPrincipal(identity);
@@ -15,8 +14,10 @@ using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
 if (isAdmin == false)
 {
     Console.ForegroundColor = ConsoleColor.Red;
-    Console.WriteLine("RUN AS ADMINISTRATOR OR IT WON'T WORK CORRECTLY!");
-    Console.WriteLine();
+    Console.WriteLine("THIS PROGRAM MUST RUN AS ADMINISTRATOR OR IT WON'T WORK CORRECTLY!");
+    Console.ForegroundColor = ConsoleColor.White;
+    Console.ReadKey();
+    System.Environment.Exit(0);
     Console.ForegroundColor = ConsoleColor.White;
 }
 
@@ -28,10 +29,13 @@ do
     Console.WriteLine("-----------------------");
     Console.ForegroundColor = ConsoleColor.White;
     Console.WriteLine();
-    Console.WriteLine("1 = OVRServer_x64.exe");
-    Console.WriteLine("2 = vrserver.exe");
-    Console.WriteLine("3 = OVRServer_x64.exe & vrserver.exe");
-    Console.WriteLine("4 = Beat Saber.exe");
+    Console.WriteLine("---------Oculus---------");
+    Console.WriteLine("1 = OVRServer_x64.exe & OVRRedir.exe (RealTime)");
+    Console.WriteLine("2 = OculusDash.exe (High)");
+    Console.WriteLine("---------Other----------");
+    Console.WriteLine("3 = vrserver.exe (RealTime)");
+    Console.WriteLine("4 = Beat Saber.exe (RealTime)");
+    Console.WriteLine("------------------------");
     Console.WriteLine("5 = All of the above");
     Console.WriteLine("6 = Exit");
 
@@ -40,34 +44,36 @@ do
     switch (option.Key)
     {
         case ConsoleKey.D1: case ConsoleKey.NumPad1:
-            Set_Priority("OVRServer_x64", "OVRServer_x64.exe");
+            Set_Priority("OVRServer_x64", "OVRServer_x64.exe", "RealTime");
+            Set_Priority("OVRRedir", "OVRRedir.exe", "RealTime");
             break;
         case ConsoleKey.D2: case ConsoleKey.NumPad2:
-            Set_Priority("vrserver", "vrserver.exe");
+            Set_Priority("OculusDash", "OculusDash.exe", "High");
             break;
         case ConsoleKey.D3: case ConsoleKey.NumPad3:
-            Set_Priority("OVRServer_x64", "OVRServer_x64.exe");
-            Set_Priority("vrserver", "vrserver.exe");
+            Set_Priority("vrserver", "vrserver.exe", "RealTime");
             break;
         case ConsoleKey.D4: case ConsoleKey.NumPad4:
-            Set_Priority("Beat Saber", "Beat Saber.exe");
+            Set_Priority("Beat Saber", "Beat Saber.exe", "RealTime");
             break;
         case ConsoleKey.D5: case ConsoleKey.NumPad5:
-            Set_Priority("OVRServer_x64", "OVRServer_x64.exe");
-            Set_Priority("vrserver", "vrserver.exe");
-            Set_Priority("Beat Saber", "Beat Saber.exe");
+            Set_Priority("OVRServer_x64", "OVRServer_x64.exe", "RealTime");
+            Set_Priority("OVRRedir", "OVRRedir.exe", "RealTime");
+            Set_Priority("OculusDash", "OculusDash.exe", "High");
+            Set_Priority("vrserver", "vrserver.exe", "RealTime");
+            Set_Priority("Beat Saber", "Beat Saber.exe", "RealTime");
             break;
         case ConsoleKey.D6: case ConsoleKey.NumPad6:
-            repeat = false;
+            System.Environment.Exit(1);
             break;
         default:
             Console.WriteLine(); Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Invalid Key!"); Console.ForegroundColor = ConsoleColor.White;
             break;
     }
-} while (repeat == true);
+} while (true);
 
-static void Set_Priority(string process_name, string app_name)
+static void Set_Priority(string process_name, string app_name, string priority)
 {
     Process[] process = Process.GetProcessesByName(process_name);
         if (process.Length == 0)
@@ -75,7 +81,7 @@ static void Set_Priority(string process_name, string app_name)
             Console.WriteLine(); Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"{app_name} is not running"); Console.ForegroundColor = ConsoleColor.White;
         }
-        else
+        else if (priority == "RealTime")
         {
             foreach (Process proc in process)
             {
@@ -83,6 +89,21 @@ static void Set_Priority(string process_name, string app_name)
                 Console.WriteLine("Changing Priority for: " + proc.Id + " To RealTime");
                 proc.PriorityClass = ProcessPriorityClass.RealTime;
                 if (proc.PriorityClass == ProcessPriorityClass.RealTime)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine($"{app_name} Priority Changed!");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+            }
+        }
+        else if (priority == "High")
+        {
+            foreach (Process proc in process)
+            {
+                Console.WriteLine(); Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Changing Priority for: " + proc.Id + " To High");
+                proc.PriorityClass = ProcessPriorityClass.High;
+                if (proc.PriorityClass == ProcessPriorityClass.High)
                 {
                     Console.WriteLine();
                     Console.WriteLine($"{app_name} Priority Changed!");

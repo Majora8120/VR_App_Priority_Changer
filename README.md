@@ -1,9 +1,8 @@
 # VR App Priority Changer
 
-Allows you to easily change the priority of vr applications to help reduce stuttering in-game.
+This application make it easy to change the priority of some vr applications which can help reduce stuttering in some cases
 
-You need to run the application as administrator or it will only set the process priority to high not realtime
-
+You need to run this application as administrator as it is required to change the priority of the applications
 # Building
 
 1. Download and install the latest [.NET SDK](https://dotnet.microsoft.com/en-us/download)
