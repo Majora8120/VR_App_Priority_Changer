@@ -1,6 +1,6 @@
 # VR App Priority Changer
 
-This application make it easy to change the priority of some vr applications which can help reduce stuttering in some cases
+This application makes it easy to change the priority of some vr applications which can help reduce stuttering in some cases
 
 You need to run this application as administrator as it is required to change the priority of the applications
 # Building
