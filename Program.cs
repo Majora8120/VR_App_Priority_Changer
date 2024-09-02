@@ -14,8 +14,9 @@ using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
 if (isAdmin == false)
 {
     Console.ForegroundColor = ConsoleColor.Red;
-    Console.WriteLine("THIS PROGRAM MUST RUN AS ADMINISTRATOR OR IT WON'T WORK CORRECTLY!");
+    Console.WriteLine("THIS PROGRAM MUST BE RAN AS ADMINISTRATOR OR IT WON'T WORK CORRECTLY!");
     Console.ForegroundColor = ConsoleColor.White;
+    Console.WriteLine("Press any key to exit");
     Console.ReadKey();
     System.Environment.Exit(0);
     Console.ForegroundColor = ConsoleColor.White;
