@@ -65,7 +65,7 @@ do
             Set_Priority("Beat Saber", "Beat Saber.exe", "RealTime");
             break;
         case ConsoleKey.D6: case ConsoleKey.NumPad6:
-            System.Environment.Exit(1);
+            System.Environment.Exit(0);
             break;
         default:
             Console.WriteLine(); Console.ForegroundColor = ConsoleColor.Red;
