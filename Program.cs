@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Security.Principal;
+using Microsoft.Win32;
 
 bool isAdmin;
 
