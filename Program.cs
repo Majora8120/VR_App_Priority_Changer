@@ -40,14 +40,14 @@ do
     Console.WriteLine("-----------------------");
     Console.WriteLine();
     Console.WriteLine("-----Registry Edit-----");
-    Console.WriteLine("5 = Permanently disable Oculus PC Asynchronous Spacewarp");
+    Console.WriteLine("5 = Disable Oculus PC Asynchronous Spacewarp");
     Console.WriteLine("6 = Re-Enable Oculus PC Asynchronous Spacewarp");
     Console.WriteLine("-----------------------");
     Console.WriteLine("ESC = Exit");
 
-    var option = Console.ReadKey();
+    ConsoleKeyInfo key_pressed = Console.ReadKey();
 
-    switch (option.Key)
+    switch (key_pressed.Key)
     {
         case ConsoleKey.D1: case ConsoleKey.NumPad1:
             Set_Priority("OVRServer_x64", "OVRServer_x64.exe", ProcessPriorityClass.RealTime);
@@ -63,10 +63,10 @@ do
             Set_Priority("Beat Saber", "Beat Saber.exe", ProcessPriorityClass.High);
         break;
         case ConsoleKey.D5: case ConsoleKey.NumPad5:
-            Edit_Registry("create");
+            Edit_Registry("create_value");
         break;
         case ConsoleKey.D6: case ConsoleKey.NumPad6:
-            Edit_Registry("delete");
+            Edit_Registry("delete_value");
         break;
         case ConsoleKey.Escape:
             Environment.Exit(0);
@@ -80,14 +80,14 @@ do
     }
 } while (true);
 
-static void Set_Priority(string process_name, string app_name, ProcessPriorityClass priority)
+static void Set_Priority(string process_name, string executable_name, ProcessPriorityClass priority)
 {
     Process[] process = Process.GetProcessesByName(process_name);
         if (process.Length == 0)
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine();
-            Console.WriteLine($"{app_name} is not running");
+            Console.WriteLine($"{executable_name} is not running");
             Console.ForegroundColor = ConsoleColor.White;
         }
         else
@@ -101,65 +101,63 @@ static void Set_Priority(string process_name, string app_name, ProcessPriorityCl
                 if (proc.PriorityClass == priority)
                 {
                     Console.WriteLine();
-                    Console.WriteLine($"{app_name} Priority Changed!");
+                    Console.WriteLine($"{executable_name} Priority Changed!");
                     Console.ForegroundColor = ConsoleColor.White;
                 }
             }
         }
 }
 
-static void Edit_Registry(string edit_option)
+static void Edit_Registry(string registry_edit_option)
 {
     if (Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Oculus") is null)
     {
         Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine();
-        Console.WriteLine(@"Registry subkey HKEY_LOCAL_MACHINE\SOFTWARE\Oculus is null. Is Oculus Link installed?");
+        Console.WriteLine(@"HKEY_LOCAL_MACHINE\SOFTWARE\Oculus is null. Is Oculus Link installed?");
         Console.ForegroundColor = ConsoleColor.White;
     }
     else if (Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Oculus") is not null)
     {
         RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Oculus", true) ?? throw new ArgumentNullException(nameof(key), "How TF is this null!");
-        switch (edit_option)
+        switch (registry_edit_option)
         {
-            case "create":
+            case "create_value":
                 if (key.GetValue("AswDisabled")?.ToString() is not "1")
                 {
                     key.SetValue(@"AswDisabled", 1, RegistryValueKind.DWord);
 
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine();
-                    Console.WriteLine("Registry key created!");
-                    Console.ForegroundColor = ConsoleColor.White;
-                }
-                else
-                {
-                    Console.ForegroundColor = ConsoleColor.DarkYellow;
-                    Console.WriteLine();
-                    Console.WriteLine("Registry key already exists!");
-                    Console.ForegroundColor= ConsoleColor.White;
-                }
-            break;
-            case "delete":
-                if (key.GetValue("AswDisabled")?.ToString() is not null)
-                {
-                    key.DeleteValue("AswDisabled");
-
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine();
-                    Console.WriteLine("Registry key deleted!");
+                    Console.WriteLine("Registry value created!");
                     Console.ForegroundColor = ConsoleColor.White;
                 }
                 else
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine();
-                    Console.WriteLine("Registry key already deleted");
+                    Console.WriteLine("Registry value already exists!");
+                    Console.ForegroundColor= ConsoleColor.White;
+                }
+            break;
+            case "delete_value":
+                if (key.GetValue("AswDisabled")?.ToString() is not null)
+                {
+                    key.DeleteValue("AswDisabled");
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine();
+                    Console.WriteLine("Registry value deleted!");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine();
+                    Console.WriteLine("Registry value already deleted!");
                     Console.ForegroundColor = ConsoleColor.White;
                 }
             break;
-            default:
-                throw new Exception($"edit_option is {edit_option} not create or delete");
         }
         key.Close();
     }

@@ -1,5 +1,5 @@
 # VR Tools
-Some things I made that I find useful for VR
+Some things I made that I find useful for VR. Must be ran as administrator to work!
 # Building
 1. Download and install the latest [.NET SDK](https://dotnet.microsoft.com/en-us/download)
 2. Download the source code
